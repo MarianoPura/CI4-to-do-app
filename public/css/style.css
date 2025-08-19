@@ -1,0 +1,18 @@
+body{
+    background-color: rgb(224, 228, 233);
+}
+
+.formClass{
+    background-color: aliceblue;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.complete{
+    text-decoration: line-through;
+}
+
+li:hover{
+    cursor:pointer;
+}
