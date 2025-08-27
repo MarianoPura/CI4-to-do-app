@@ -13,6 +13,9 @@ $routes->post('updateTask/(:segment)', [TaskController::class, 'update'], ['filt
 $routes->post('register', [UsersController::class, 'register'], ['filter' => 'guest']);
 $routes->post('login', [UsersController::class, 'login'], ['filter' => 'guest']);
 $routes->post('logout', [UsersController::class, 'logout'], ['filter' => 'auth']);
+$routes->post('updateAccount', [UsersController::class, 'accountUpdate']);
+$routes->get('accountSettings', [UsersController::class, 'AccountSettings']);
 $routes->delete('delete/(:segment)', [TaskController::class, 'delete'], ['filter' => 'auth']);
 $routes->get('loginPage', [UsersController::class, 'loginPage'], ['filter' => 'guest']);
 $routes->get('registration', [UsersController::class, 'registrationPage'], ['filter' => 'guest']);
+$routes->view('account-settings', 'login/accountSettings');

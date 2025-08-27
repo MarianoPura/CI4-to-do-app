@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const registrationForm =  document.querySelector('#registrationForm');
     const loginForm = document.querySelector('#loginForm');
     const logout = document.querySelector('#logout');
+    const settings = document.querySelector('#settings-form');
 
     function loadTask (){
         fetch('to-do', {
@@ -11,9 +12,9 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
-            if(!data.success){
-                alert(data.message);
-                window.location.href = data.redirect;
+            if(data.authSuccess){
+                alert(data.authMessage);
+                window.location.href = data.authRedirect;
             }
             taskList.innerHTML = '';
             data.tasks.forEach(task =>{
@@ -71,9 +72,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
          
     }
-
-
-    
 
     if (registrationForm){
         registrationForm.addEventListener('submit', function(e){
@@ -135,6 +133,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     alert(data.message);
                     window.location.href = data.redirect;
                 }
+                else if(data.authSuccess){
+                    alert(data.authMessage);
+                    window.location.href = data.authRedirect;
+                }
                 else {
                     alert(JSON.stringify(data.message));
                     if (data.redirect){
@@ -167,6 +169,50 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }).catch(err=>console.error(err))
     })
+
+    if(settings){
+        settings.addEventListener('submit', function(e){
+            e.preventDefault();
+            const form = {
+                name: document.querySelector('#name').value,
+                email: document.querySelector('#email').value,
+                password: document.querySelector('#password').value,
+                confirm: document.querySelector('#confirm').value
+            }
+            fetch('updateAccount', {
+                method:'POST',
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(form)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.href = data.redirect;
+                }
+                else{
+                    alert(data.message);
+                }
+            }).catch(err=>console.error(err))
+        })
+    }
+/*
+    function accountSettings(){
+            fetch('accountSettings', {
+                method: 'GET',
+                headers: {'X-Requested-With': 'XMLHttpRequest'}
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+            })
+        }
+*/
+
 
 loadTask();
     })

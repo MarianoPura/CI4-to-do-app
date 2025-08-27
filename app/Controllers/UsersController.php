@@ -87,6 +87,39 @@ class UsersController extends BaseController
         return $this->response->setJSON(['success' => true, 'message' => 'Account signed out', 'redirect' => base_url('loginPage')]);
     }
 
+    public function AccountSettings(){
+        $id = session()->get('id');
+        if($this->request->isAJAX()){
+            $model = model(Users::class);
+            $data = $model->find($id);
+            return $this->response->setJSON([$data]);
+        }
+    }
+
+    public function accountUpdate (){
+        $id = session()->get('id');
+
+        helper(['form']);
+        $post = $this->request->getJSON(true);
+        if(!$this->validateData($post,[
+            'name' => 'required|min_length[3]|max_length[250]',
+            'email' => 'required|is_unique[users.email]|min_length[10]|max_length[150]',
+            'password' => 'required|min_length[1]|max_length[50]',
+            'confirm' => 'required|matches[password]'
+        ])){
+            return $this->response->setJSON(['success' => false, 'message' => 'Account update failed']);
+        }
+        $validated = $this->validator->getValidated();
+        $model = model(Users::class);
+        $model->update($id, [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => password_hash ($validated['password'], PASSWORD_DEFAULT)
+        ]);
+            return $this->response->setJSON(['success' => true, 'message' => 'Account update successful!', 'redirect' => base_url('to-do')]);
+
+    }
+
     public function loginPage(){
         return view('login/login');
     }

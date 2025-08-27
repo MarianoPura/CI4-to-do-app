@@ -205,8 +205,10 @@
       <button class="btn" type="submit">Sign in</button>
 
       <?php if(session()->getFlashdata('success')): ?>
-        <div class="alert alert-success">
+        <div class="alert alert-success" style="justify-content: center;">
           <?= session()->getFlashdata('success')?>
+          <?php elseif(session()->getFlashData('error')):?>
+            <?= session()->getFlashdata('error')?>
        <?php endif;?>
         </div>
       <div class="divider">or</div>

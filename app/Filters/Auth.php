@@ -29,9 +29,9 @@ class Auth implements FilterInterface
         if(!session()->get('loggedIn')){
             if($incoming->isAJAX()){
                 return Services::response()->setJSON([
-                    'success' => false,
-                    'message' => 'You are not logged in',
-                    'redirect' => base_url('loginPage')
+                    'authSuccess' => true,
+                    'authMessage' => 'You are not logged in',
+                    'authRedirect' => base_url('loginPage')
                 ]);
             }
 

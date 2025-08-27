@@ -30,9 +30,9 @@ class Guest implements FilterInterface
         if(session()->get('loggedIn')){
             if($incoming->isAJAX()){
                 return Services::response()->setJSON([
-                    'success' => false,
-                    'message' => 'You are already logged in',
-                    'redirect' => base_url('to-do')
+                    'authSuccess' => true,
+                    'authMessage' => 'You are already logged in',
+                    'authRedirect' => base_url('to-do')
                 ]);
             }
             return redirect()->to('to-do')->with('error', 'You are already logged in');
